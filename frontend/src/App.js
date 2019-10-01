@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from "react-redux";
 
 function App() {
   return (
@@ -23,4 +24,11 @@ function App() {
   );
 }
 
-export default App;
+export default connect(
+  null,
+  null
+)(App);
+
+//All Proptypes of this object
+App.propTypes = {
+};
