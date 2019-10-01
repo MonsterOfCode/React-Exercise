@@ -2,8 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { connect } from "react-redux";
+import { actionGetAllPostsApi } from './redux/actions/src/posts';
 
-function App() {
+
+const App =  ({ dispatchGetAllPostsApi }) => {
   return (
     <div className="App">
       <header className="App-header">
@@ -13,8 +15,7 @@ function App() {
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
+          onClick={dispatchGetAllPostsApi}
           rel="noopener noreferrer"
         >
           Learn React 2
@@ -24,10 +25,7 @@ function App() {
   );
 }
 
-export default connect(
-  null,
-  null
-)(App);
+export default connect(null, {dispatchGetAllPostsApi: actionGetAllPostsApi})(App);
 
 //All Proptypes of this object
 App.propTypes = {
