@@ -1,11 +1,11 @@
 
 import { combineReducers } from 'redux'
-import baseReducer from './base'
+import postsReducer from './postsReducer'
 
 // this object is to able us to have the redux state on multiple individual fragments
 // to allow a easy management with on the reducers
 const rootReducer = combineReducers({
-    base: baseReducer
+    posts: postsReducer
 })
 
 export default rootReducer
