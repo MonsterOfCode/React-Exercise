@@ -1,49 +1,153 @@
 import { ofType } from 'redux-observable';
 import { switchMap, catchError, mergeMap, filter, takeUntil } from 'rxjs/operators';
-import { concat, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
-import { GET_ALL_POSTS_API, GETTING_ALL_POSTS_API, actionGettingAllPostsApi, actionGetAllPostsApiDone, actionGetAllPostsApiFailure, actionLoading } from '../../../actions'
+import { 
+    POSTS_GET_ALL_API, POST_MAKE_VOTE_API, POST_DELETE_API, POST_EDIT_API,
+    actionPostsGetAllApiDone, actionPostsGetAllApiFailure, 
+    actionPostMakeVoteApiDone, actionPostMakeVoteApiFailure,
+    actionPostDeleteApiDone, actionPostDeleteApiFailure,
+    actionPostEditLocalCommit, actionPostEditApiDone, actionPostEditApiFailure
+} from '../../../actions'
 
 
-export const observableActionGetAllPostEpic$ =  action$ =>
+/*
+                       db    88     88         88""Yb  dP"Yb  .dP"Y8 888888 .dP"Y8
+                      dPYb   88     88         88__dP dP   Yb `Ybo."   88   `Ybo."
+                     dP__Yb  88  .o 88  .o     88"""  Yb   dP o.`Y8b   88   o.`Y8b
+                    dP""""Yb 88ood8 88ood8     88      YbodP  8bodP'   88   8bodP'
+*/
+export const observableCallApiGetAllPostEpic$ =  action$ =>
     action$.pipe(
-        ofType(GET_ALL_POSTS_API),
-        switchMap(action => {
-            return of(actionGettingAllPostsApi()) // call other observable to make the promise´
-        }),
+        ofType(POSTS_GET_ALL_API),
+        switchMap(action => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                url: "http://localhost:3001/posts",
+                method: 'GET'
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostsGetAllApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostsGetAllApiFailure(error));
+                })
+            )
+        ),
         takeUntil(action$.pipe(
-          filter(({type}) => type.includes("CANCELLING") && type.includes("API"))
+            // if we what a cancel in future
+            filter(({type}) => type === "POSTS_GET_ALL_API_CANCELLING")
         ))
     )
 
+
 /*
-   db    88""Yb 88      dP""b8    db    88     88     .dP"Y8
-  dPYb   88__dP 88     dP   `"   dPYb   88     88     `Ybo."
- dP__Yb  88"""  88     Yb       dP__Yb  88  .o 88  .o o.`Y8b
-dP""""Yb 88     88      YboodP dP""""Yb 88ood8 88ood8 8bodP'
+                    Yb    dP  dP"Yb  888888 888888 .dP"Y8
+                     Yb  dP  dP   Yb   88   88__   `Ybo."
+                      YbdP   Yb   dP   88   88""   o.`Y8b
+                       YP     YbodP    88   888888 8bodP'
 */
-export const observableFetchAllPostEpic$ = action$ =>
-action$.pipe(
-    ofType(GETTING_ALL_POSTS_API),
-    mergeMap( action =>
-        ajax({
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'danymota'
-            },
-            url: "http://localhost:3001/posts",
-            method: 'GET'
-            }).pipe(
-            mergeMap(data => { //  transform the data before be used by the actions
-                return of(data.response)
-            }),
-            mergeMap(data => {
-                return of(actionGetAllPostsApiDone(data))
-            }),
-            catchError(error => {
-                return of(actionGetAllPostsApiFailure(error));
-            })
+export const observableCallApiPostVoteEpic$ =  action$ =>
+    action$.pipe(
+        ofType(POST_MAKE_VOTE_API),
+        switchMap(({payload}) => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                body: {
+                    option: payload.positive ? "upVote" : "downVote"
+                },
+                url: "http://localhost:3001/posts/"+payload.id,
+                method: 'POST',
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostMakeVoteApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostMakeVoteApiFailure(error));
+                })
+            )
         )
     )
-)
+
+
+/*
+                    888888 8888b.  88 888888
+                    88__    8I  Yb 88   88
+                    88""    8I  dY 88   88
+                    888888 8888Y"  88   88
+*/
+export const observableCallApiPostEditEpic$ =  action$ =>
+    action$.pipe(
+        ofType(POST_EDIT_API),
+        switchMap(({payload}) => 
+            of(actionPostEditLocalCommit(payload))
+        ),
+        switchMap(({payload}) => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                body: {
+                    title: payload.title,
+                    body: payload.body
+                },
+                url: "http://localhost:3001/posts/"+payload.id,
+                method: 'PUT',
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostEditApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostEditApiFailure(error));
+                })
+            )
+        )
+    )
+
+/*
+                    8888b.  888888 88     888888 888888 888888
+                     8I  Yb 88__   88     88__     88   88__
+                     8I  dY 88""   88  .o 88""     88   88""
+                    8888Y"  888888 88ood8 888888   88   888888
+*/
+export const observableCallApiPostDeleteEpic$ =  action$ =>
+    action$.pipe(
+        ofType(POST_DELETE_API),
+        switchMap(({payload}) => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                url: "http://localhost:3001/posts/"+payload,
+                method: 'DELETE',
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostDeleteApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostDeleteApiFailure(error));
+                })
+            )
+        )
+    )

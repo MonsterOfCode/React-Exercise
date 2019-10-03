@@ -12,13 +12,11 @@ const App =  ({ dispatchGetAllPostsApi }) => {
       <img src={logo} className={"App-logo"} alt="logo" />
       <h1 className="App-title">
         React Comments
-        <span className="px-2" role="img" aria-label="Chat">💬🤪</span>
+        <span className="px-2" role="img" aria-label="Chat"> &#128172;&#128540;&#129322;</span>
       </h1>
     </header>
-
     <div className="row">
       <div className="col-4  pt-3 border-right">
-        <h6>Say something about React</h6>
         <PostsList/>
       </div>
       <div className="col-8  pt-3 bg-white">

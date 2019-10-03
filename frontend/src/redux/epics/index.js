@@ -1,7 +1,9 @@
 import { combineEpics } from 'redux-observable'
-import { observableActionGetAllPostEpic$, observableFetchAllPostEpic$ } from './src/posts/postsEpics'
+import { observableCallApiGetAllPostEpic$, observableCallApiPostVoteEpic$, observableCallApiPostDeleteEpic$, observableCallApiPostEditEpic$ } from './src/posts/postsEpics'
 
 export const rootEpic = combineEpics(
-    observableActionGetAllPostEpic$,
-    observableFetchAllPostEpic$,
+    observableCallApiGetAllPostEpic$,
+    observableCallApiPostVoteEpic$,
+    observableCallApiPostDeleteEpic$,
+    observableCallApiPostEditEpic$,
   );
