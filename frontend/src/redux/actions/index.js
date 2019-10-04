@@ -1,2 +1,2 @@
-export * from "./src/comments"
+export * from "./src/categoriesActions"
 export * from "./src/postsActions"

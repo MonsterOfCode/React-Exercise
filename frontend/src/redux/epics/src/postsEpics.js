@@ -4,20 +4,23 @@ import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 import { 
-    POSTS_GET_ALL_API, POST_MAKE_VOTE_API, POST_DELETE_API, POST_EDIT_API,
+    POSTS_GET_ALL_API, POST_MAKE_VOTE_API, POST_DELETE_API, POST_EDIT_API, POSTS_GET_POSTS_BY_CATEGORY_API,
     actionPostsGetAllApiDone, actionPostsGetAllApiFailure, 
     actionPostMakeVoteApiDone, actionPostMakeVoteApiFailure,
     actionPostDeleteApiDone, actionPostDeleteApiFailure,
-    actionPostEditLocalCommit, actionPostEditApiDone, actionPostEditApiFailure
-} from '../../../actions'
+    actionPostEditApiDone, actionPostEditApiFailure,
+    actionPostsByCategoryApiDone, actionPostsByCategoryApiFailure
+} from '../../actions'
 
 
 /*
-                       db    88     88         88""Yb  dP"Yb  .dP"Y8 888888 .dP"Y8
-                      dPYb   88     88         88__dP dP   Yb `Ybo."   88   `Ybo."
-                     dP__Yb  88  .o 88  .o     88"""  Yb   dP o.`Y8b   88   o.`Y8b
-                    dP""""Yb 88ood8 88ood8     88      YbodP  8bodP'   88   8bodP'
+                    88""Yb  dP"Yb  .dP"Y8 888888 .dP"Y8
+                    88__dP dP   Yb `Ybo."   88   `Ybo."
+                    88"""  Yb   dP o.`Y8b   88   o.`Y8b
+                    88      YbodP  8bodP'   88   8bodP'
 */
+
+// get all posts
 export const observableCallApiGetAllPostEpic$ =  action$ =>
     action$.pipe(
         ofType(POSTS_GET_ALL_API),
@@ -45,6 +48,32 @@ export const observableCallApiGetAllPostEpic$ =  action$ =>
             // if we what a cancel in future
             filter(({type}) => type === "POSTS_GET_ALL_API_CANCELLING")
         ))
+    )
+
+// get posts by category
+export const observableCallApiGetPostsByCategoryEpic$ =  action$ =>
+    action$.pipe(
+        ofType(POSTS_GET_POSTS_BY_CATEGORY_API),
+        switchMap(action => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                url: `http://localhost:3001/${action.payload}/posts`,
+                method: 'GET'
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostsByCategoryApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostsByCategoryApiFailure(error));
+                })
+            )
+        )
     )
 
 
@@ -92,9 +121,6 @@ export const observableCallApiPostVoteEpic$ =  action$ =>
 export const observableCallApiPostEditEpic$ =  action$ =>
     action$.pipe(
         ofType(POST_EDIT_API),
-        switchMap(({payload}) => 
-            of(actionPostEditLocalCommit(payload))
-        ),
         switchMap(({payload}) => 
             ajax({
                 headers: {

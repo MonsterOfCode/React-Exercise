@@ -1,8 +1,8 @@
 /*
-                       db    88     88         88""Yb  dP"Yb  .dP"Y8 888888 .dP"Y8
-                      dPYb   88     88         88__dP dP   Yb `Ybo."   88   `Ybo."
-                     dP__Yb  88  .o 88  .o     88"""  Yb   dP o.`Y8b   88   o.`Y8b
-                    dP""""Yb 88ood8 88ood8     88      YbodP  8bodP'   88   8bodP'
+                    88""Yb  dP"Yb  .dP"Y8 888888 .dP"Y8
+                    88__dP dP   Yb `Ybo."   88   `Ybo."
+                    88"""  Yb   dP o.`Y8b   88   o.`Y8b
+                    88      YbodP  8bodP'   88   8bodP'
 */
 export const POSTS_GET_ALL_API = "POSTS_GET_ALL_API"
 export const actionGetAllPostsApi = () => ({ type: POSTS_GET_ALL_API })
@@ -15,6 +15,15 @@ export const actionPostsGetAllApiFailure = error => ({ type: POSTS_GET_ALL_API_F
 
 export const POSTS_GET_ALL_API_CANCELLING = "POSTS_GET_ALL_API_CANCELLING"
 export const actionPostsGetAllApiCancelling = () => ({ type: POSTS_GET_ALL_API_CANCELLING})
+
+export const POSTS_GET_POSTS_BY_CATEGORY_API = "POSTS_GET_POSTS_BY_CATEGORY_API"
+export const actionGetPostsByCategoryApi = category => ({ type: POSTS_GET_POSTS_BY_CATEGORY_API, payload: category})
+
+export const POSTS_GET_POSTS_BY_CATEGORY_API_DONE = "POSTS_GET_POSTS_BY_CATEGORY_API_DONE"
+export const actionPostsByCategoryApiDone = list => ({ type: POSTS_GET_POSTS_BY_CATEGORY_API_DONE, payload: list})
+
+export const POSTS_GET_POSTS_BY_CATEGORY_API_FAILURE = "POSTS_GET_POSTS_BY_CATEGORY_API_FAILURE"
+export const actionPostsByCategoryApiFailure = error => ({ type: POSTS_GET_POSTS_BY_CATEGORY_API_FAILURE, payload: error })
 
 
 /*
@@ -55,6 +64,15 @@ export const POST_EDIT_API_FAILURE = "POST_EDIT_API_FAILURE"
 export const actionPostEditApiFailure = data => ({ type: POST_EDIT_API_FAILURE, payload: data})
 
 
+/*
+                    88""Yb 88""Yb 888888 Yb    dP 88 888888 Yb        dP
+                    88__dP 88__dP 88__    Yb  dP  88 88__    Yb  db  dP
+                    88"""  88"Yb  88""     YbdP   88 88""     YbdPYbdP
+                    88     88  Yb 888888    YP    88 888888    YP  YP
+*/
+export const POST_PREVIEW = "POST_PREVIEW"
+export const actionPostPreview = post => ({ type: POST_PREVIEW, payload: post})
+
 
 /*
                     8888b.  888888 88     888888 888888 888888
@@ -70,3 +88,16 @@ export const actionPostDeleteApiDone = data => ({ type: POST_DELETE_API_DONE, pa
 
 export const POST_DELETE_API_FAILURE = "POST_DELETE_API_FAILURE"
 export const actionPostDeleteApiFailure = data => ({ type: POST_DELETE_API_FAILURE, payload: data})
+
+
+/*
+ dP"Yb  88""Yb 8888b.  888888 88""Yb .dP"Y8
+dP   Yb 88__dP  8I  Yb 88__   88__dP `Ybo."
+Yb   dP 88"Yb   8I  dY 88""   88"Yb  o.`Y8b
+ YbodP  88  Yb 8888Y"  888888 88  Yb 8bodP'
+*/
+export const POST_ORDER_BY_DATE = "POST_ORDER_BY_DATE"
+export const actionPostOrderByDate = desc => ({ type: POST_ORDER_BY_DATE, payload: desc})
+
+export const POST_ORDER_BY_VOTES = "POST_ORDER_BY_VOTES"
+export const actionPostOrderByVotes = desc => ({ type: POST_ORDER_BY_VOTES, payload: desc})
