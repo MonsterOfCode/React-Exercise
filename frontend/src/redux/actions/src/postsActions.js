@@ -71,9 +71,6 @@ export const actionPostEdit = post => ({ type: POST_EDIT, payload: post})
 export const POST_EDIT_API = "POST_EDIT_API"
 export const actionPostEditApi = post => ({ type: POST_EDIT_API, payload: post})
 
-export const POST_EDIT_LOCAL_COMMIT = "POST_EDIT_LOCAL_COMMIT"
-export const actionPostEditLocalCommit = post => ({ type: POST_EDIT_LOCAL_COMMIT, payload: post})
-
 export const POST_EDIT_API_DONE = "POST_EDIT_API_DONE"
 export const actionPostEditApiDone = data => ({ type: POST_EDIT_API_DONE, payload: data})
 
