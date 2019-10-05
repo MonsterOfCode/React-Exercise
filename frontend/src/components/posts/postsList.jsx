@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { actionPostMakeVoteApi, actionPostDeleteApi, actionPostEdit, actionPostPreview, actionPostOrderByDate, actionPostOrderByVotes } from '../../redux/actions/src/postsActions';
+import { actionPostMakeVoteApi, actionPostDeleteApi, actionPostEdit, actionPostPreview, actionPostOrderByDate, actionPostOrderByVotes, actionPostCreateApi } from '../../redux/actions/src/postsActions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,7 +12,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Link } from "react-router-dom";
 import EditModal from './editModal'
-
+import MyModal from '../modal';
+import uuid from "uuid";
 
 const useStyles = makeStyles(theme => ({
     wrapperTable: {
@@ -20,8 +21,8 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(3),
       overflowX: 'auto',
       display: 'inline-block',
-      paddingRight: '1%',
-      paddingLeft: '1%',
+      marginRight: '1%',
+      marginLeft: '1%',
     },
     table: {
       minWidth: 650,
@@ -35,10 +36,25 @@ const useStyles = makeStyles(theme => ({
     }
   }));
 
-const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, dispatchPostDeleteApi, dispatchPostEdit, dispatchPostPreview, dispatchPostOrderByDate, dispatchPostOrderByVotes }) => {
+const postBase = {
+    "id": null,
+    "timestamp": Date.now(),
+    "title": "",
+    "body": "",
+    "author": "",
+    "category": null
+}
+const postBaseHide = ["id", "timestamp", "category"]
+
+const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, dispatchPostDeleteApi, dispatchPostEdit, dispatchPostPreview, dispatchPostOrderByDate, dispatchPostOrderByVotes, dispatchPostCreateApi }) => {
 
     const classes = useStyles();
     const [filter, setFilter] = useState({votes: false, date: false});
+    const [renderCreate, setRenderCreate] = useState(false);
+	
+	const toggleCreateModal = action => {
+		setRenderCreate(action)
+	}
 
     var longToDate = function(millisec) {
         return (new Date(millisec).toUTCString());
@@ -52,6 +68,10 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
     const orderByDate = () => {
         setFilter({...filter, date: !filter.date})
         dispatchPostOrderByDate(filter.date)
+    }
+
+    const newPost = post => {
+        dispatchPostCreateApi(post)
     }
 
     const renderList = () => {
@@ -79,7 +99,10 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
         return(
             <>
             <Paper className={classes.wrapperTable}>
-                <h2 className={"textCenter"} >Posts {category? `of ${category}` : ""}</h2>
+                <div className={"textCenter positionRelative"}>
+                    {category && <h2 className={"inlineBlock floatLeft"}><button className={classes.simpleButton} onClick={() =>toggleCreateModal(true)}>&#10133;</button></h2>}
+                    <h2 className={"inlineBlock"} >Posts {category? `of ${category}` : ""}</h2>
+                </div>
                 <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
@@ -107,7 +130,26 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
         )
     }
 
-    return posts.length ? renderTable() : <p className={classes.wrapperTable}>No posts available</p>
+    const renderContent = () => posts.length ? renderTable() : <div className={classes.wrapperTable}>
+                                            {category && <h2 className={"inlineBlock floatLeft marginq10"}><button className={classes.simpleButton} onClick={() =>toggleCreateModal(true)}>&#10133;</button></h2>}
+                                            <p>No posts available</p>
+                                        </div>
+
+    const myRender = () => {
+        return(
+            <>
+                {renderContent()}
+                {renderCreate && <MyModal 
+                    title={`${category} - New Post`} 
+                    baseObject={{...postBase, id: uuid.v4(), category: category}} 
+                    fieldsToHide={postBaseHide}
+                    handleClose={toggleCreateModal} 
+                    submit={newPost}/>}
+            </>
+        )
+    }
+
+    return myRender()
 }
 
 // to get the todo object from the state inside the redux and send to the component
@@ -124,6 +166,7 @@ export default connect(
         dispatchPostPreview: actionPostPreview,
         dispatchPostOrderByDate: actionPostOrderByDate,
         dispatchPostOrderByVotes: actionPostOrderByVotes,
+        dispatchPostCreateApi: actionPostCreateApi,
     }
     )(PostsList);
 
@@ -142,5 +185,6 @@ PostsList.propTypes = {
     dispatchPostPreview: PropTypes.func.isRequired,
     dispatchPostOrderByDate: PropTypes.func.isRequired,
     dispatchPostOrderByVotes: PropTypes.func.isRequired,
+    dispatchPostCreateApi: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired
 };
