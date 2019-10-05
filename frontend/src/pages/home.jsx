@@ -16,15 +16,18 @@ const Home =  ({dispatchGetAllPostsApi, dispatchGetAllCategoriesApi }) => {
 
   return (
         <>
-            <PostsList/>
             <CategoriesList/>
+            <PostsList/>
         </>
   );
 }
 
+const mapStateToProps = state => {
+    return {posts: state.posts.list, loading: state.posts.loading}
+  }
 
 export default connect(
-    null, 
+    mapStateToProps, 
     {
         dispatchGetAllPostsApi: actionGetAllPostsApi,
         dispatchGetAllCategoriesApi: actionGetAllCategoriesApi,
