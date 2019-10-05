@@ -2,7 +2,7 @@ import {
   POSTS_GET_ALL_API_DONE, POSTS_GET_ALL_API_FAILURE,
   POST_MAKE_VOTE_API_DONE, POST_MAKE_VOTE_API_FAILURE,
   POST_DELETE_API_DONE, POST_DELETE_API_FAILURE,
-  POST_EDIT, POST_EDIT_LOCAL_COMMIT, POST_EDIT_API_DONE,
+  POST_EDIT_API_DONE,
   POST_PREVIEW, POSTS_GET_POSTS_BY_CATEGORY_API_DONE,
   POST_ORDER_BY_DATE, POST_ORDER_BY_VOTES,
   COMMENTS_GET_BY_POST_API_DONE, COMMENTS_GET_BY_POST_API_FAILURE,
@@ -44,13 +44,9 @@ const postsReducer = (state = INITIAL_STATE, {type, payload}) => {
       state.list = payload.deleted ? state.list.filter(element => element.id !== payload.id) : state.list
       return state
 
-    case POST_EDIT:                   			// start editing
-    case POST_EDIT_LOCAL_COMMIT:      			// end editing and make put
-      state.editingPost = payload
-      return state
-
-    case POST_EDIT_API_DONE:          			// on Edit API done
-        state.list = state.list.map(element => element.id === payload.id ? payload : element)
+	case POST_EDIT_API_DONE:          			// on Edit API done
+		// state.list.find(element => element.id === payload.id) = payload
+		state.list = state.list.map(element => element.id === payload.id ? payload : element)
       return state
 
     case POST_PREVIEW:							// load the post to preview
