@@ -32,13 +32,12 @@ const PostDetail =  ({ post, loading, dispatchCommentCreateApi }) => {
             <>
 			<h2 className={"textCenter"} >{`Post - ${post.title}`}</h2>
             <div className={"textCenter"}>
-				<p> &nbsp; id: {post.id}</p>
-				<p> &nbsp; title: {post.title}</p>
-				<p> &nbsp; body: {post.body}</p>
-				<p> &nbsp; author: {post.author}</p>
+				<p> &nbsp; Title: {post.title}</p>
+				<p> &nbsp; Body: {post.body}</p>
+				<p> &nbsp; Author: {post.author}</p>
+				<p> &nbsp; Number of comments: {post.commentCount}</p>
+				<p> &nbsp; Current score: {post.voteScore}</p>
 				<p> &nbsp; category: {post.category}</p>
-				<p> &nbsp; voteScore: {post.voteScore}</p>
-				<p> &nbsp; commentCount: {post.commentCount}</p>
 				<p> &nbsp; Created: {millisecondsToDate(post.timestamp)}</p>
             </div>
             <CommentsList handlerNew={toggleCreateModal} post={post}/>

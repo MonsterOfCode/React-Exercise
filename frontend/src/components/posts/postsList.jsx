@@ -118,11 +118,11 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
                     <TableCell align="right">Number of comments</TableCell>
                     <TableCell align="right">
                         Current score 
-                        <button className={classes.actions, classes.simpleButton} onClick={orderByVotes}>&#127922;</button>
+                        <button className={classes.actions, classes.simpleButton} onClick={orderByVotes}>&#11014;&#11015;</button>
                     </TableCell>
                     <TableCell align="right">
                         Date
-                        <button className={classes.actions, classes.simpleButton} onClick={orderByDate}>&#127922;</button>
+                        <button className={classes.actions, classes.simpleButton} onClick={orderByDate}>&#11014;&#11015;</button>
                         </TableCell>
                     <TableCell align="right">Actions</TableCell>
                     </TableRow>

@@ -1,32 +1,31 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 import Home from "./pages/home";
 import Head from "./components/head";
-import Category from "./pages/category";
 import PostDetail from "./pages/postDetail";
+import About from "./pages/about";
+import NotFound from "./pages/404";
+import CategoriesMiddleware from "./middlewares/CategoriesMiddleware";
+import PostsMiddleware from "./middlewares/PostsMiddleware";
 
 
-function About({ match }) {
+const App = () => {
+
     return (
-      <div>
-        <h3>Plugins: {match.params.category}</h3>
-      </div>
-    );
-  }
-
-export default function App() {
-
-  return (
-    <Router>
-        <div>
-            <Head/>
-            <Switch>
-                <Route path="/:category/:post_id" component={PostDetail}/>
-                <Route path="/about" component={About}/>
-                <Route path="/:category" component={Category}/>
-                <Route path="/" component={Home}/>
+        <Router>
+            <div>
+                <Head/>
+                <Switch>
+                    <Route path="/:category/:post_id" component={PostsMiddleware}/>
+                    <Route path="/about" component={About}/>
+                    <Route path="/:category" component={CategoriesMiddleware}/>
+                    <Route path="/" component={Home}/>
+                    <Route component={NotFound} />
             </Switch>
-        </div>
-    </Router>
-  );
+            </div>
+        </Router>
+    );
 }
+
+export default App
