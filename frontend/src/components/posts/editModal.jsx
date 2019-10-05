@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from "react-redux";
-import { actionPostEditApi } from '../../redux/actions/src/postsActions';
-
+import { actionPostEditApi, actionPostEditLocalCommit } from '../../redux/actions/src/postsActions';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
@@ -19,23 +19,20 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const EditModal = ({editingPost, dispatchPostEditApi}) => {
+const EditModal = ({editingPost, dispatchPostEditApi, dispatchPostEditLocalCommit}) => {
 
   const classes = useStyles();
   const [post, setPost] = useState(editingPost);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-      if(editingPost){
-        setPost(editingPost)
-        setOpen(true);
-      }
-      
+      setPost(editingPost)
+      setOpen(!!editingPost);
   }, [editingPost]);
 
   const handleClose = () => {
-      setPost(null)
-      setOpen(false);
+    setPost(null)
+    dispatchPostEditLocalCommit(null)
   };
 
   const handleSubmit = (event) => {
@@ -79,9 +76,19 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps, 
-    {dispatchPostEditApi: actionPostEditApi}
+    {
+      dispatchPostEditApi: actionPostEditApi,
+      dispatchPostEditLocalCommit: actionPostEditLocalCommit
+    }
     )(EditModal);
 
 //All Proptypes of this object
 EditModal.propTypes = {
+    editingPost: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        voteScore: PropTypes.number.isRequired
+        }),
+    dispatchPostEditApi: PropTypes.func.isRequired,
+    dispatchPostEditLocalCommit: PropTypes.func.isRequired,
 };
