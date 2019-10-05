@@ -7,17 +7,17 @@ import CategoriesList from '../components/categories/categoriesList';
 
 import { actionGetPostsByCategoryApi, actionGetAllCategoriesApi } from '../redux/actions';
 
-const Category =  ({dispatchGetByCategoryApi, dispatchGetAllCategoriesApi, match }) => {
+const Category =  ({dispatchGetByCategoryApi, dispatchGetAllCategoriesApi, category = null }) => {
 
     useEffect(() => {
-        dispatchGetByCategoryApi(match.params.category)
+        dispatchGetByCategoryApi(category)
         dispatchGetAllCategoriesApi()
-      }, [match]);
+      }, [category]);
 
   return (
         <>
-            <PostsList category={match.params.category}/>
             <CategoriesList/>
+            <PostsList category={category}/>
         </>
   );
 }
@@ -35,9 +35,5 @@ export default connect(
 Category.propTypes = {
     dispatchGetByCategoryApi: PropTypes.func.isRequired,
     dispatchGetAllCategoriesApi: PropTypes.func.isRequired,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            category: PropTypes.string.isRequired,
-          })
-      }).isRequired
+    category: PropTypes.string.isRequired
 };

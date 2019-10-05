@@ -57,6 +57,14 @@ const CategoriesList =  ({ categories, loading}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    <TableRow>
+                        <TableCell component="th" scope="row">
+                        All
+                        </TableCell>
+                        <TableCell align="right">
+                            <Link className={classes.actions} to={`/`}>All</Link>
+                        </TableCell>
+                    </TableRow>
                     {renderList()}
                 </TableBody>
                 </Table>
