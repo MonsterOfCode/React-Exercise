@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { actionPostMakeVoteApi, actionPostDeleteApi, actionPostEdit, actionPostPreview, actionPostOrderByDate, actionPostOrderByVotes, actionPostCreateApi } from '../../redux/actions/src/postsActions';
+import { actionPostMakeVoteApi, actionPostDeleteApi, actionPostEditApi, actionPostPreview, actionPostOrderByDate, actionPostOrderByVotes, actionPostCreateApi } from '../../redux/actions/src/postsActions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -44,16 +44,22 @@ const postBase = {
     "author": "",
     "category": null
 }
-const postBaseHide = ["id", "timestamp", "category"]
+const postBaseHide = ["id", "timestamp", "category", "deleted", "commentCount", "voteScore"]
 
-const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, dispatchPostDeleteApi, dispatchPostEdit, dispatchPostPreview, dispatchPostOrderByDate, dispatchPostOrderByVotes, dispatchPostCreateApi }) => {
+const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, dispatchPostDeleteApi, dispatchPostEditApi, dispatchPostPreview, dispatchPostOrderByDate, dispatchPostOrderByVotes, dispatchPostCreateApi }) => {
 
     const classes = useStyles();
     const [filter, setFilter] = useState({votes: false, date: false});
     const [renderCreate, setRenderCreate] = useState(false);
+    const [renderEdite, setRenderEdite] = useState(false);
+    const [editingPost, setEditingPost] = useState(false);
 	
 	const toggleCreateModal = action => {
 		setRenderCreate(action)
+    }
+    
+    const toggleEditModal = action => {
+		setRenderEdite(action)
 	}
 
     var longToDate = function(millisec) {
@@ -74,6 +80,10 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
         dispatchPostCreateApi(post)
     }
 
+    const editPost = post => {
+        dispatchPostEditApi(post)
+    }
+
     const renderList = () => {
         return posts.map(row => (
             <TableRow key={row.id}>
@@ -87,7 +97,7 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
                 <TableCell align="right">
                     <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostMakeVoteApi(row.id, true)}>&#128077;</button>
                     <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostMakeVoteApi(row.id, false)}>&#128078;</button>
-                    <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostEdit(row)}>✏️</button>
+                    <button className={classes.actions, classes.simpleButton} onClick={() => { setEditingPost(row); toggleEditModal(true)}}>✏️</button>
                     <Link   className={classes.actions, classes.simpleButton} onClick={() => dispatchPostPreview(row)} to={`/${row.category}/${row.id}`}>&#128269;</Link>
                     <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostDeleteApi(row.id)}>&#128465;</button>
                 </TableCell>
@@ -125,7 +135,7 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
                 </TableBody>
                 </Table>
             </Paper>
-            <EditModal/>
+            {/* <EditModal/> */}
             </>
         )
     }
@@ -145,6 +155,13 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
                     fieldsToHide={postBaseHide}
                     handleClose={toggleCreateModal} 
                     submit={newPost}/>}
+
+                {renderEdite && <MyModal 
+                    title={`Editing - ${editingPost.title}`} 
+                    baseObject={editingPost} 
+                    fieldsToHide={[...postBaseHide, "author"]}
+                    handleClose={toggleEditModal} 
+                    submit={editPost}/>}
             </>
         )
     }
@@ -161,7 +178,7 @@ export default connect(
     mapStateToProps, 
     {
         dispatchPostMakeVoteApi: actionPostMakeVoteApi,
-        dispatchPostEdit: actionPostEdit,
+        dispatchPostEditApi: actionPostEditApi,
         dispatchPostDeleteApi: actionPostDeleteApi,
         dispatchPostPreview: actionPostPreview,
         dispatchPostOrderByDate: actionPostOrderByDate,
