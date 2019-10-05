@@ -63,3 +63,12 @@ const MyModal = ({title, baseObject, fieldsToHide = null, handleClose, submit}) 
 
 
 export default MyModal
+
+//All Proptypes of this object
+MyModal.propTypes = {
+  title: PropTypes.string.isRequired,
+  baseObject: PropTypes.object.isRequired,
+  fieldsToHide: PropTypes.array,
+  handleClose: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+};

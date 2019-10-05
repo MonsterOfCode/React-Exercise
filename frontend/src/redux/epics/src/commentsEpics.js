@@ -1,5 +1,5 @@
 import { ofType } from 'redux-observable';
-import { switchMap, catchError, mergeMap, filter, takeUntil } from 'rxjs/operators';
+import { switchMap, catchError, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 

@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import { Link } from "react-router-dom";
 import MyModal from '../modal';
 import uuid from "uuid";
+import { millisecondsToDate } from '../../utils/dates';
 
 const useStyles = makeStyles(theme => ({
     wrapperTable: {
@@ -45,6 +46,7 @@ const postBase = {
 }
 const postBaseHide = ["id", "timestamp", "category", "deleted", "commentCount", "voteScore"]
 
+
 const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, dispatchPostDeleteApi, dispatchPostEditApi, dispatchPostPreview, dispatchPostOrderByDate, dispatchPostOrderByVotes, dispatchPostCreateApi }) => {
 
     const classes = useStyles();
@@ -60,10 +62,6 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
     const toggleEditModal = action => {
 		setRenderEdite(action)
 	}
-
-    var longToDate = function(millisec) {
-        return (new Date(millisec).toUTCString());
-    }
 
     const orderByVotes = () => {
         setFilter({...filter, votes: !filter.votes})
@@ -92,7 +90,7 @@ const PostsList =  ({ posts, category = null, loading, dispatchPostMakeVoteApi, 
                 <TableCell align="right">{row.author}</TableCell>
                 <TableCell align="right">{row.commentCount}</TableCell>
                 <TableCell align="right">{row.voteScore}</TableCell>
-                <TableCell align="right">{longToDate(row.timestamp)}</TableCell>
+                <TableCell align="right">{millisecondsToDate(row.timestamp)}</TableCell>
                 <TableCell align="right">
                     <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostMakeVoteApi(row.id, true)}>&#128077;</button>
                     <button className={classes.actions, classes.simpleButton} onClick={() => dispatchPostMakeVoteApi(row.id, false)}>&#128078;</button>

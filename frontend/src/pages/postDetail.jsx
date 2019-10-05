@@ -5,6 +5,7 @@ import CommentsList from '../components/comments/commentsList';
 import MyModal from '../components/modal';
 import uuid from "uuid";
 import { actionCommentCreateApi } from '../redux/actions';
+import { millisecondsToDate } from '../utils/dates';
 
 const baseComment = {
 	id: null,
@@ -17,10 +18,6 @@ const baseCommentHide = ["id", "timestamp", "parentId"]
 const PostDetail =  ({ post, loading, dispatchCommentCreateApi }) => {
 
 	const [renderCreate, setRenderCreate] = useState(false);
-
-    var longToDate = function(millisec) {
-        return (new Date(millisec).toUTCString());
-	}
 	
 	const toggleCreateModal = action => {
 		setRenderCreate(action)
@@ -42,7 +39,7 @@ const PostDetail =  ({ post, loading, dispatchCommentCreateApi }) => {
 				<p> &nbsp; category: {post.category}</p>
 				<p> &nbsp; voteScore: {post.voteScore}</p>
 				<p> &nbsp; commentCount: {post.commentCount}</p>
-				<p> &nbsp; Created: {longToDate(post.timestamp)}</p>
+				<p> &nbsp; Created: {millisecondsToDate(post.timestamp)}</p>
             </div>
             <CommentsList handlerNew={toggleCreateModal} post={post}/>
 			{renderCreate && <MyModal 
