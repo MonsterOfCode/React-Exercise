@@ -66,3 +66,19 @@ li a:hover {
 .textCenter{
   text-align: center;
 }
+
+.inlineBlock{
+  display: inline-block;
+}
+
+.positionRelative{
+  position: relative;
+}
+
+.floatLeft{
+  float: left;
+}
+
+.marginq10{
+  margin: 10px;
+}
