@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from "react-redux";
 import { actionPostEditApi, actionPostEditLocalCommit } from '../../redux/actions/src/postsActions';
-
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
@@ -84,4 +84,11 @@ export default connect(
 
 //All Proptypes of this object
 EditModal.propTypes = {
+    editingPost: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        voteScore: PropTypes.number.isRequired
+        }),
+    dispatchPostEditApi: PropTypes.func.isRequired,
+    dispatchPostEditLocalCommit: PropTypes.func.isRequired,
 };

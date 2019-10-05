@@ -42,6 +42,23 @@ export const POST_MAKE_VOTE_API_FAILURE = "POST_MAKE_VOTE_API_FAILURE"
 export const actionPostMakeVoteApiFailure = error => ({ type: POST_MAKE_VOTE_API_FAILURE, payload: error})
 
 
+
+/*
+                     dP""b8 88""Yb 888888    db    888888 888888
+                    dP   `" 88__dP 88__     dPYb     88   88__
+                    Yb      88"Yb  88""    dP__Yb    88   88""
+                     YboodP 88  Yb 888888 dP""""Yb   88   888888
+*/
+export const POST_CREATE_API = "POST_CREATE_API"
+export const actionPostCreateApi = post => ({ type: POST_CREATE_API, payload: post})
+
+export const POST_CREATE_API_DONE = "POST_CREATE_API_DONE"
+export const actionPostCreateApiDone = data => ({ type: POST_CREATE_API_DONE, payload: data})
+
+export const POST_CREATE_API_FAILURE = "POST_CREATE_API_FAILURE"
+export const actionPostCreateApiFailure = data => ({ type: POST_CREATE_API_FAILURE, payload: data})
+
+
 /*
                     888888 8888b.  88 888888
                     88__    8I  Yb 88   88

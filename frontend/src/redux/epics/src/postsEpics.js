@@ -4,12 +4,13 @@ import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 import { 
-    POSTS_GET_ALL_API, POST_MAKE_VOTE_API, POST_DELETE_API, POST_EDIT_API, POSTS_GET_POSTS_BY_CATEGORY_API,
+    POSTS_GET_ALL_API, POST_MAKE_VOTE_API, POST_DELETE_API, POST_EDIT_API, POSTS_GET_POSTS_BY_CATEGORY_API, POST_CREATE_API,
     actionPostsGetAllApiDone, actionPostsGetAllApiFailure, 
     actionPostMakeVoteApiDone, actionPostMakeVoteApiFailure,
     actionPostDeleteApiDone, actionPostDeleteApiFailure,
     actionPostEditApiDone, actionPostEditApiFailure,
-    actionPostsByCategoryApiDone, actionPostsByCategoryApiFailure
+    actionPostsByCategoryApiDone, actionPostsByCategoryApiFailure,
+    actionPostCreateApiDone, actionPostCreateApiFailure
 } from '../../actions'
 
 
@@ -106,6 +107,41 @@ export const observableCallApiPostVoteEpic$ =  action$ =>
                 }),
                 catchError(error => {
                     return of(actionPostMakeVoteApiFailure(error));
+                })
+            )
+        )
+    )
+
+
+/*
+                     dP""b8 88""Yb 888888    db    888888 888888
+                    dP   `" 88__dP 88__     dPYb     88   88__
+                    Yb      88"Yb  88""    dP__Yb    88   88""
+                     YboodP 88  Yb 888888 dP""""Yb   88   888888
+*/
+export const observableCallApiPostCreateNewEpic$ =  action$ =>
+    action$.pipe(
+        ofType(POST_CREATE_API),
+        switchMap(({payload}) => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                body: {
+                    ...payload
+                },
+                url: "http://localhost:3001/posts",
+                method: 'POST',
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionPostCreateApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionPostCreateApiFailure(error));
                 })
             )
         )
