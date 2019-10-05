@@ -34,7 +34,8 @@ const MyModal = ({title, baseObject, fieldsToHide = null, handleClose, submit}) 
   }
 
   const renderFields = () => {
-    return Object.keys(baseObject).filter(field => !fieldsToHide.includes(field)).map(function(key, index) {
+    let keys = fieldsToHide ? Object.keys(baseObject).filter(field => !fieldsToHide.includes(field)) : Object.keys(baseObject)
+    return keys.map(function(key, index) {
         return(
             <div key={index}>
                 <p>{key}:</p>

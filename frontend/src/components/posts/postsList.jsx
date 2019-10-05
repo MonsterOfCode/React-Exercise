@@ -11,7 +11,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Link } from "react-router-dom";
-import EditModal from './editModal'
 import MyModal from '../modal';
 import uuid from "uuid";
 
@@ -198,7 +197,7 @@ PostsList.propTypes = {
       ),
     dispatchPostMakeVoteApi: PropTypes.func.isRequired,
     dispatchPostDeleteApi: PropTypes.func.isRequired,
-    dispatchPostEdit: PropTypes.func.isRequired,
+    dispatchPostEditApi: PropTypes.func.isRequired,
     dispatchPostPreview: PropTypes.func.isRequired,
     dispatchPostOrderByDate: PropTypes.func.isRequired,
     dispatchPostOrderByVotes: PropTypes.func.isRequired,

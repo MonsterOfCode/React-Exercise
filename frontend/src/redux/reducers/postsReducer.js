@@ -9,7 +9,8 @@ import {
   COMMENTS_MAKE_VOTE_API_DONE, COMMENTS_MAKE_VOTE_API_FAILURE,
   COMMENTS_DELETE_API_DONE, COMMENTS_DELETE_API_FAILURE,
   COMMENT_CREATE_API_DONE, COMMENT_CREATE_API_FAILURE,
-  POST_CREATE_API_DONE, POST_CREATE_API_FAILURE
+  POST_CREATE_API_DONE, POST_CREATE_API_FAILURE,
+  COMMENT_EDIT_API_DONE, COMMENT_EDIT_API_FAILURE
 } from '../actions';
 
 
@@ -89,6 +90,10 @@ const postsReducer = (state = INITIAL_STATE, {type, payload}) => {
 		state.comments.list.push(payload)
 		return state;
 
+	case COMMENT_EDIT_API_DONE:
+		state.comments.list = state.comments.list.map(element => element.id === payload.id ? payload : element)
+		return state
+
 	case COMMENTS_DELETE_API_DONE:        		// on Delete on comment
 		// check if the post is really deleted and make the filter
 		--state.previewPost.commentCount
@@ -103,6 +108,7 @@ const postsReducer = (state = INITIAL_STATE, {type, payload}) => {
 	case COMMENTS_GET_BY_POST_API_FAILURE:     	// error on get all comments of post
 	case COMMENTS_MAKE_VOTE_API_FAILURE:  		// error on make a vote on comment
 	case COMMENT_CREATE_API_FAILURE:  			// error on create new comment
+	case COMMENT_EDIT_API_FAILURE:  			// error on edit a comment
     case COMMENTS_DELETE_API_FAILURE:     		// error on make delete of comment
       state.apiError = payload
       return state
