@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Head from "./components/head";
 import Category from "./pages/category";
-import PostDetail from "./components/posts/postDetail";
+import PostDetail from "./pages/postDetail";
 
 
 function About({ match }) {

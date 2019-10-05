@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(3),
       overflowX: 'auto',
       display: 'inline-block',
-      paddingLeft: '1%',
-      paddingRight: '1%',
+      marginLeft: '1%',
+      marginRight: '1%',
     },
     table: {
     },
