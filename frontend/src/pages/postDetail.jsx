@@ -5,6 +5,7 @@ import CommentsList from '../components/comments/commentsList';
 import MyModal from '../components/modal';
 import uuid from "uuid";
 import { actionCommentCreateApi } from '../redux/actions';
+
 const baseComment = {
 	id: null,
     timestamp: Date.now(),

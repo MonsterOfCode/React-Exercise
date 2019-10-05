@@ -49,6 +49,22 @@ export const actionCommentCreateApiFailure = data => ({ type: COMMENT_CREATE_API
 
 
 /*
+                    888888 8888b.  88 888888
+                    88__    8I  Yb 88   88
+                    88""    8I  dY 88   88
+                    888888 8888Y"  88   88
+*/
+export const COMMENT_EDIT_API = "COMMENT_EDIT_API"
+export const actionCommentEditApi = post => ({ type: COMMENT_EDIT_API, payload: post})
+
+export const COMMENT_EDIT_API_DONE = "COMMENT_EDIT_API_DONE"
+export const actionCommentEditApiDone = data => ({ type: COMMENT_EDIT_API_DONE, payload: data})
+
+export const COMMENT_EDIT_API_FAILURE = "COMMENT_EDIT_API_FAILURE"
+export const actionCommentEditApiFailure = data => ({ type: COMMENT_EDIT_API_FAILURE, payload: data})
+
+
+/*
                     8888b.  888888 88     888888 888888 888888
                      8I  Yb 88__   88     88__     88   88__
                      8I  dY 88""   88  .o 88""     88   88""

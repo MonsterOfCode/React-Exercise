@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable'
 import { observableCallApiGetAllPostEpic$, observableCallApiPostVoteEpic$, observableCallApiPostDeleteEpic$, observableCallApiPostEditEpic$, observableCallApiGetPostsByCategoryEpic$, observableCallApiPostCreateNewEpic$ } from './src/postsEpics'
 import { observableCallApiGetAllCategoriesEpic$ } from './src/categoriesEpics'
-import { observableCallApiGetCommentsByPostEpic$, observableCallApiCommentVoteEpic$, observableCallApiCommentDeleteEpic$, observableCallApiCommentCreateNewEpic$ } from './src/commentsEpics'
+import { observableCallApiGetCommentsByPostEpic$, observableCallApiCommentVoteEpic$, observableCallApiCommentDeleteEpic$, observableCallApiCommentCreateNewEpic$, observableCallApiCommentEditEpic$ } from './src/commentsEpics'
 
 export const rootEpic = combineEpics(
     observableCallApiGetAllPostEpic$,
@@ -15,4 +15,5 @@ export const rootEpic = combineEpics(
     observableCallApiCommentVoteEpic$,
     observableCallApiCommentDeleteEpic$,
     observableCallApiCommentCreateNewEpic$,
+    observableCallApiCommentEditEpic$,
   );

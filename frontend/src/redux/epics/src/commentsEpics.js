@@ -4,11 +4,12 @@ import { of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 import { 
-    COMMENTS_GET_BY_POST_API, COMMENTS_MAKE_VOTE_API, COMMENTS_DELETE_API, COMMENT_CREATE_API,
+    COMMENTS_GET_BY_POST_API, COMMENTS_MAKE_VOTE_API, COMMENTS_DELETE_API, COMMENT_CREATE_API, COMMENT_EDIT_API,
     actionCommentsGetByPostApiDone, actionCommentsGetByPostApiFailure,
     actionCommentMakeVoteApiDone, actionCommentMakeVoteApiFailure,
     actionCommentDeleteApiDone, actionCommentDeleteApiFailure,
-    actionCommentCreateApiDone, actionCommentCreateApiFailure
+    actionCommentCreateApiDone, actionCommentCreateApiFailure,
+    actionCommentEditApiDone, actionCommentEditApiFailure
 } from '../../actions'
 
 
@@ -113,6 +114,40 @@ export const observableCallApiCommentCreateNewEpic$ =  action$ =>
         )
     )
 
+
+/*
+                    888888 8888b.  88 888888
+                    88__    8I  Yb 88   88
+                    88""    8I  dY 88   88
+                    888888 8888Y"  88   88
+*/
+export const observableCallApiCommentEditEpic$ =  action$ =>
+    action$.pipe(
+        ofType(COMMENT_EDIT_API),
+        switchMap(({payload}) => 
+            ajax({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'danymota'
+                },
+                body: {
+                    ...payload
+                },
+                url: "http://localhost:3001/comments/"+payload.id,
+                method: 'PUT',
+                }).pipe(
+                mergeMap(data => { // transform the data before be used by the actions
+                    return of(data.response)
+                }),
+                mergeMap(data => {
+                    return of(actionCommentEditApiDone(data))
+                }),
+                catchError(error => {
+                    return of(actionCommentEditApiFailure(error));
+                })
+            )
+        )
+    )
 
 
 

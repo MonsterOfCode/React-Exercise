@@ -65,9 +65,6 @@ export const actionPostCreateApiFailure = data => ({ type: POST_CREATE_API_FAILU
                     88""    8I  dY 88   88
                     888888 8888Y"  88   88
 */
-export const POST_EDIT = "POST_EDIT"
-export const actionPostEdit = post => ({ type: POST_EDIT, payload: post})
-
 export const POST_EDIT_API = "POST_EDIT_API"
 export const actionPostEditApi = post => ({ type: POST_EDIT_API, payload: post})
 
